@@ -1,0 +1,72 @@
+NAME
+    Log::Any::Adapter::Core::Patch::UseDataDumperFunc - Use Data::Dumper
+    function to dump data structures
+
+VERSION
+    This document describes version 0.01 of
+    Log::Any::Adapter::Core::Patch::UseDataDumperFunc (from Perl
+    distribution Log-Any-Adapter-Core-Patch-UseDataDumperFunc), released on
+    2014-06-06.
+
+SYNOPSIS
+     use Log::Any '$log';
+     use Log::Any::DDF; # shortcut for Log::Any::Adapter::Core::Patch::UseDataDumperFunc;
+
+     $log->debug("See this data structure: %s", $some_data);
+
+DESCRIPTION
+    Log::Any dumps data structures using Data::Dumper like this:
+
+     sub _dump_one_line {
+         my ($value) = @_;
+
+         return Data::Dumper->new( [$value] )->Indent(0)->Sortkeys(1)->Quotekeys(0)
+           ->Terse(1)->Dump();
+     }
+
+    This patch replaces that subroutine with:
+
+     sub _dump_one_line {
+         my ($value) = @_;
+
+         return Dumper($value);
+     }
+
+    The goal is to be able to customize the dumping parameter by setting the
+    various "$Data::Dumper::*" variables (e.g. "Indent", "Terse", etc).
+
+FAQ
+SEE ALSO
+    Log::Any::Adapter::Core::Patch::SetDumperIndent
+
+    Log::Any::Adapter::Core::Patch::UseDataDump
+
+    Log::Any::Adapter::Core::Patch::UseDataDumperPerlTidy
+
+HOMEPAGE
+    Please visit the project's homepage at
+    <https://metacpan.org/release/Log-Any-Adapter-Core-Patch-UseDataDumperFu
+    nc>.
+
+SOURCE
+    Source repository is at
+    <https://github.com/sharyanto/perl-Log-Any-Adapter-Core-Patch-UseDataDum
+    perFunc>.
+
+BUGS
+    Please report any bugs or feature requests on the bugtracker website
+    <https://rt.cpan.org/Public/Dist/Display.html?Name=Log-Any-Adapter-Core-
+    Patch-UseDataDumperFunc>
+
+    When submitting a bug or request, please include a test-file or a patch
+    to an existing test-file that illustrates the bug or desired feature.
+
+AUTHOR
+    Steven Haryanto <stevenharyanto@gmail.com>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2014 by Steven Haryanto.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+
